@@ -7,6 +7,9 @@ class CommentCreateSerializer(serializers.Serializer):
 
 
 class CommentListSerializer(serializers.ModelSerializer):
+    review = serializers.CharField(max_length=500000, read_only=True)
+    sentiment = serializers.CharField(max_length=50, read_only=True)
+
     class Meta:
         model = Comments
         fields = '__all__'

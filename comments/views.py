@@ -12,12 +12,12 @@ import pandas as pd
 from comments.models import Comments
 from django.http import JsonResponse
 from rest_framework.generics import ListAPIView
+from comments.models import Comments
 
 
 class CommentCreateAPIView(XLSXFileMixin, PostAPIView):
     permission_classes = permissions.AllowAny,
     serializer_class = CommentCreateSerializer
-    pagination_class = StandardResultsSetPagination
     parser_classes = MultiPartParser,
     renderer_classes = XLSXRenderer,
 
@@ -41,9 +41,25 @@ class CommentCreateAPIView(XLSXFileMixin, PostAPIView):
         return JsonResponse(data=context, status=200)
 
 
-class CommentListAPIView(ListAPIView):
+# class CommentListAPIView(ListAPIView):
+#     permission_classes = permissions.AllowAny,
+#     serializer_class = CommentListSerializer
+#     pagination_class = StandardResultsSetPagination
+#     queryset = Comments.objects.all()
+#     lookup_field = '_id'
+
+
+class CommentGetPositiveAPIView(ListAPIView):
     permission_classes = permissions.AllowAny,
     serializer_class = CommentListSerializer
     pagination_class = StandardResultsSetPagination
     queryset = Comments.objects.all()
-    lookup_field = '_id'
+
+    def get(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(
+            raise_exception=True
+        )
+        lst = Comments.objects.filter(sentiment="positive").count()
+        print(lst)
+        return Response(BaseResponse.success_response(200, "message"))
