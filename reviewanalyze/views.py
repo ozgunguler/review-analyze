@@ -5,6 +5,7 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework import permissions
 from rest_framework.generics import ListAPIView, RetrieveAPIView, DestroyAPIView
 from rest_framework.response import Response
+from django.db.models import Max
 
 from movies.models import Movies
 from ratings.models import Ratings
@@ -51,22 +52,32 @@ class MostAverageRatingMoviesAPIView(RetrieveAPIView):
     queryset = Ratings.objects.all()
 
     def retrieve(self, request, *args, **kwargs):
-        ratings = Ratings.objects.all()
-        data = []
+        # ratings = Ratings.objects.all()
+        movies = Movies.objects.all()
+        ordered_datas = []
         # Movies.objects.filter(titleId=ratings[i].tconst)
-
-        for i in range(0, 100):
-            x = Movies.objects.filter(titleId=ratings[i].tconst)
-            data.append({
-                "titleId": x.titleId,
-                "title": x.title,
-                "averageRating": x.averageRating,
-                "numVotes": x.numVotes,
-                "language": x.language
-            })
-        max_value = max(data['averageRating'])
-        print(max_value)
+        avg = Ratings.objects.all().order_by('-averageRating')
+        for i in avg:
+            for k in movies:
+                if i.tconst == k.titleId:
+                    ordered_datas.append({
+                        "title": k.title,
+                        "titleId": k.titleId,
+                        "averageRating": i.averageRating,
+                        "numVotes": i.numVotes
+                    })
+        data = ordered_datas[0:20]
         print(data)
+        # for i in range(0, 100):
+        #     x = Movies.objects.filter(titleId=ratings[i].tconst)
+        #     data.append({
+        #         "titleId": x.titleId,
+        #         "title": x.title,
+        #         "averageRating": x.averageRating,
+        #         "numVotes": x.numVotes,
+        #         "language": x.language
+        #     })
+        # max_value = max(data['averageRating'])
         # df = pd.DataFrame(ratings)
         # print(df)
         # try:
