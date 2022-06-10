@@ -1,12 +1,12 @@
 class ReviewAnalyzeRouter(object):
 
     def db_for_read(self, model, **hints):
-        if model._meta.app_label == 'comments':
+        if model._meta.app_label == 'movies':
             return 'review'
         return None
 
     def db_for_write(self, model, **hints):
-        if model._meta.app_label == 'comments':
+        if model._meta.app_label == 'movies':
             return 'review'
         return None
 
@@ -16,6 +16,6 @@ class ReviewAnalyzeRouter(object):
     #     return None
 
     def allow_migrate(self, db, app_label, model_name=None, **hints):
-        if app_label == 'comments':
+        if app_label == 'movies':
             return db == 'review'
         return None

@@ -29,7 +29,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'drf_yasg',
     'user',
-    'comments'
+    'movies',
+    'ratings'
 ]
 
 MIDDLEWARE = [
@@ -128,7 +129,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
         'rest_framework.permissions.IsAuthenticated',
         'rest_framework.permissions.BasePermission',
-        'rest_framework.permissions.IsAdminUser',messagemessage
+        'rest_framework.permissions.IsAdminUser'
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',

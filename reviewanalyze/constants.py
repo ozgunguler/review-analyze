@@ -3,14 +3,15 @@ from rest_framework.pagination import PageNumberPagination
 
 class BaseResponse:
     response = {}
-    
-    def json_response(self, status_code, data):
-        self.response = {
+
+    @staticmethod
+    def json_response(status_code, data):
+        response = {
             "success": True,
             "status_code": status_code,
             "data": data
         }
-        return self.response
+        return response
 
     def json_success_response(self, status, message, data):
         self.response = {

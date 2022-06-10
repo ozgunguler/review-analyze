@@ -25,7 +25,7 @@ urlpatterns = [
     url(r'^api-user/', include('rest_framework.urls', namespace='rest_framework')),
 
     path('v1/user/', include("user.urls.v1.urls")),
-    path('v1/comment/', include("comments.urls")),
-
-
+    path('v1/movies/', include("movies.urls")),
+    path('v1/ratings/', include("ratings.urls")),
+    path('v1/analyze/', include("analyze.urls")),
 ]
